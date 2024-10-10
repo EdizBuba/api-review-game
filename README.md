@@ -34,10 +34,9 @@ Permet d'être lancé sans compilation et de relancer dynamiquement l'applicatio
 1) Identifier et corriger l'erreur de la route POST consoles
 2) Renvoyer une erreur personnalisée avec un code 404 si la console n'est pas trouvée lors des routes PATCH et GET/{id}
 3) 
-    1) Développer la route GET /games
-    2) Développer la route GET /games/{id}
-    3) Développer la route POST /games : **/!\ La console du jeu ne sera pas créée dans cette route. Il faut que la console existe déjà.**
-    4) Développer la route PATCH /games/{id}
+    1) Développer la route GET /games/{id}
+    2) Développer la route POST /games : **/!\ La console du jeu ne sera pas créée dans cette route. Il faut que la console existe déjà.**
+    3) Développer la route PATCH /games/{id}
 4) 
     1) Développer le modèle Review
     2) Développer le DTO Review
