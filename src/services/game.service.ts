@@ -58,7 +58,7 @@ export class GameService {
   ): Promise<GameDTO> {
     const consoleExists = await Console.findByPk(consoleId);
     if (!consoleExists) {
-      notFound(`Console with id ${consoleId} does not exist`);
+      notFound(`Console with ${consoleId}`);
     }
 
     return Game.create({ title, console_id: consoleId });
@@ -72,7 +72,7 @@ export class GameService {
 
     const consoleExists = await Console.findByPk(dto.consoleId);
     if (!consoleExists) {
-      throw new Error(`Console with id ${dto.consoleId} does not exist`);
+      notFound(`Console with id ${dto.consoleId}`);
     }
     game.title = dto.title;
     game.console_id = dto.consoleId;
