@@ -1,4 +1,5 @@
 import { Console } from "../models/console.model";
+import { notFound } from "../error/NotFoundError";
 
 export class ConsoleService {
 
@@ -9,7 +10,11 @@ export class ConsoleService {
 
   // Récupère une console par ID
   public async getConsoleById(id: number): Promise<Console | null> {
-    return Console.findByPk(id);
+    const console = await Console.findByPk(id);
+    if (!console) {
+      notFound(`Console with id ${id}`);
+    }
+    return console;
   }
 
   // Crée une nouvelle console
@@ -17,14 +22,16 @@ export class ConsoleService {
     name: string,
     manufacturer: string
   ): Promise<Console> {
-    return Console.create({ id: -1, name: name, manufacturer: manufacturer });
+    return Console.create({name: name, manufacturer: manufacturer });
   }
 
   // Supprime une console par ID
   public async deleteConsole(id: number): Promise<void> {
     const console = await Console.findByPk(id);
     if (console) {
-      console.destroy();
+      await console.destroy();
+    } else {
+      notFound(`Console with id ${id}`);
     }
   }
 
@@ -35,13 +42,13 @@ export class ConsoleService {
     manufacturer?: string
   ): Promise<Console | null> {
     const console = await Console.findByPk(id);
-    if (console) {
-      if (name) console.name = name;
-      if (manufacturer) console.manufacturer = manufacturer;
-      await console.save();
-      return console;
+    if (!console) {
+      notFound(`Console with id ${id}`);
     }
-    return null;
+    if (name) console.name = name;
+    if (manufacturer) console.manufacturer = manufacturer;
+    await console.save();
+    return console;
   }
 }
 
