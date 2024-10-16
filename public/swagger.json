@@ -32,6 +32,43 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"AddReviewDTO": {
+				"properties": {
+					"game_id": {
+						"type": "number",
+						"format": "double"
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"review_text": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"game_id",
+					"rating"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EditReviewDTO": {
+				"properties": {
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"review_text": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"rating"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ConsoleDTO": {
 				"properties": {
 					"id": {
@@ -72,7 +109,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"CreateGameDTO": {
+			"AddEditDTO": {
 				"properties": {
 					"title": {
 						"type": "string"
@@ -85,6 +122,22 @@
 				"required": [
 					"title",
 					"consoleId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AddEditConsoleDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"manufacturer": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"manufacturer"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -149,7 +202,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ReviewDTO"
+								"$ref": "#/components/schemas/AddReviewDTO"
 							}
 						}
 					}
@@ -254,7 +307,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ReviewDTO"
+								"$ref": "#/components/schemas/EditReviewDTO"
 							}
 						}
 					}
@@ -309,7 +362,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateGameDTO"
+								"$ref": "#/components/schemas/AddEditDTO"
 							}
 						}
 					}
@@ -386,7 +439,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateGameDTO"
+								"$ref": "#/components/schemas/AddEditDTO"
 							}
 						}
 					}
@@ -397,6 +450,42 @@
 				"responses": {
 					"204": {
 						"description": "No content"
+					}
+				},
+				"tags": [
+					"Games"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/games/{id}/reviews": {
+			"get": {
+				"operationId": "GetGameReviews",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ReviewDTO"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -464,7 +553,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ConsoleDTO"
+								"$ref": "#/components/schemas/AddEditConsoleDTO"
 							}
 						}
 					}
@@ -569,11 +658,47 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ConsoleDTO"
+								"$ref": "#/components/schemas/AddEditConsoleDTO"
 							}
 						}
 					}
 				}
+			}
+		},
+		"/consoles/{id}/games": {
+			"get": {
+				"operationId": "GetConsoleGames",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/GameDTO"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Consoles"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

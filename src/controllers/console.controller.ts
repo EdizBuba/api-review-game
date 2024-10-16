@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Delete, Route, Path, Body, Tags, Patch } from "tsoa";
 import { consoleService } from "../services/console.service";
-import { ConsoleDTO } from "../dto/console.dto";
+import { ConsoleDTO, AddEditConsoleDTO } from "../dto/console.dto";
+import { Game } from "../models/game.model";
+import { GameDTO } from "../dto/game.dto";
 
 @Route("consoles")
 @Tags("Consoles")
@@ -17,14 +19,19 @@ export class ConsoleController extends Controller {
     return consoleService.getConsoleById(id);
   }
 
-  // Crée une nouvelle console
+  @Get("{id}/games")
+  public async getConsoleGames(@Path() id: number): Promise<GameDTO[] | null> {
+    const games: Game[] = await consoleService.getConsoleGamesById(id);
+    return games
+  }
+
   @Post("/")
   public async createConsole(
-    @Body() requestBody: ConsoleDTO
+    @Body() requestBody: AddEditConsoleDTO
   ): Promise<ConsoleDTO> {
-    const { name, manufacturer } = requestBody;
-    return consoleService.createConsole(name, manufacturer);
+    return consoleService.createConsole(requestBody.name, requestBody.manufacturer);
   }
+
 
   // Supprime une console par ID
   @Delete("{id}")
@@ -32,13 +39,11 @@ export class ConsoleController extends Controller {
     await consoleService.deleteConsole(id);
   }
 
-  // Met à jour une console par ID
   @Patch("{id}")
   public async updateConsole(
     @Path() id: number,
-    @Body() requestBody: ConsoleDTO
+    @Body() requestBody: AddEditConsoleDTO
   ): Promise<ConsoleDTO | null> {
-    const { name, manufacturer } = requestBody;
-    return consoleService.updateConsole(id, name, manufacturer);
+    return consoleService.updateConsole(id, requestBody.name, requestBody.manufacturer);
   }
 }

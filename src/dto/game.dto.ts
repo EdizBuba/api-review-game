@@ -5,3 +5,8 @@ export interface GameDTO {
   title: string;
   console: ConsoleDTO;
 }
+
+export interface AddEditDTO {
+  title: string;
+  consoleId: number;
+}

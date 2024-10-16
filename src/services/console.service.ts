@@ -19,12 +19,24 @@ export class ConsoleService {
     return console;
   }
 
+  public async getConsoleGamesById(id: number): Promise<Game[]> {
+    const console = await this.getConsoleById(id);
+    if (!console) {
+      notFound(`Console with id : ${id}`);
+    }
+    return await Game.findAll({
+      where: {
+        console_id: id,
+      },
+    });
+  }
+
   // Crée une nouvelle console
   public async createConsole(
     name: string,
     manufacturer: string
   ): Promise<Console> {
-    return Console.create({name: name, manufacturer: manufacturer });
+    return Console.create({ name: name, manufacturer: manufacturer });
   }
 
   // Supprime une console par ID

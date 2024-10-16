@@ -3,3 +3,8 @@ export interface ConsoleDTO {
   name: string;
   manufacturer: string;
 }
+
+export interface AddEditConsoleDTO {
+  name: string;
+  manufacturer: string;
+}

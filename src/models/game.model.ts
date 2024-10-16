@@ -40,4 +40,3 @@ Game.init(
 );
 
 Game.belongsTo(Console, { foreignKey: "console_id", as: "console" });
-Game.hasMany(Review, { foreignKey: "game_id", as: "reviews" });
