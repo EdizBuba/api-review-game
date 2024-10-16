@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database"; // Connection à la base de données
 import { Console } from "./console.model";
+import { Review } from "./review.model";
 
 export interface GameAttributes {
   id?: number;
@@ -39,3 +40,4 @@ Game.init(
 );
 
 Game.belongsTo(Console, { foreignKey: "console_id", as: "console" });
+Game.hasMany(Review, { foreignKey: "game_id", as: "reviews" });

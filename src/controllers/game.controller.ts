@@ -33,4 +33,9 @@ export class GameController extends Controller {
   ): Promise<GameDTO | null> {
     return gameService.updateGame(id, requestBody);
   }
+
+  @Delete("{id}")
+  public async deleteGame(@Path() id: number): Promise<void> {
+    await gameService.deleteGame(id);
+  }
 }

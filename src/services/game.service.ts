@@ -1,6 +1,7 @@
 import { GameDTO } from "../dto/game.dto";
 import { Console } from "../models/console.model";
 import { Game } from "../models/game.model";
+import { Review } from "../models/review.model";
 import { notFound } from "../error/NotFoundError";
 import { CreateGameDTO } from "../dto/creategame.dto";
 
@@ -79,6 +80,29 @@ export class GameService {
     await game.save();
 
     return game;
+  }
+
+  public async deleteGame(id: number): Promise<void> {
+    const game = await Game.findByPk(id, {
+      include: [{
+        model: Review,
+        as: 'reviews'
+      }]
+    });
+  
+    if (!game) {
+      notFound(`Game with id ${id}`);
+    }
+  
+    const reviewsCount = await Review.count({
+      where: { game_id: id }
+    });
+  
+    if (reviewsCount > 0) {
+      throw new Error(`Cannot delete game with id ${id}`);
+    }
+  
+    await game.destroy();
   }
 }
 
